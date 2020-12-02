@@ -1,16 +1,29 @@
 ﻿using System;
+using FingerPaint.Pages;
+using FingerPaint.Utilities;
+using FingerPaint.ViewModels;
+using Prism;
+using Prism.Ioc;
+using Prism.Unity;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace FingerPaint
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
-        public App()
+        public App(IPlatformInitializer platformInitializer = null) : base(platformInitializer) { }
+
+        protected override void OnInitialized()
         {
             InitializeComponent();
+            // Navigate to the first page
+            NavigationService.NavigateAsync(PageConstants.Start); 
+        }
 
-            MainPage = new MainPage();
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
         }
 
         protected override void OnStart()

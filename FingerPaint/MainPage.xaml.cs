@@ -79,7 +79,6 @@ namespace FingerPaint
 
         async Task PushFileToServer(RequestSave request)
         {
-            indi.IsVisible = true;
             var apiReponse = RestService.For<IApiSaveFile>(host);
             var reponse = await apiReponse.SaveFile(request);
             if (reponse.Success == true)
@@ -90,12 +89,10 @@ namespace FingerPaint
             {
                 await DisplayAlert("Notice", "Save Image Fail", "OK");
             }
-            indi.IsVisible = false;
         }
 
         async Task LoadFileFormServe(RequestGet request)
         {
-            indi.IsVisible = true;
 
             var apiReponse = RestService.For<IApiSaveFile>(host);
             var reponse = await apiReponse.GetFile(request);
@@ -103,7 +100,6 @@ namespace FingerPaint
             {
                 imgSignature.Source = host + reponse.LinkFile;
             }
-            indi.IsVisible = false;
         }
     }
 }

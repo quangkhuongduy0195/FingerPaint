@@ -24,6 +24,8 @@
             CaptionText=""
             StrokeWidth="3"
             StrokeColor="Black"
+            PromptText=""
+            SignatureLineWidth="0"
             BackgroundColor="White" />
         <Entry Placeholder="Name Signature"
                Grid.Row="1"

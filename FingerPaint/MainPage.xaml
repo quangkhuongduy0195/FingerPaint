@@ -6,11 +6,11 @@
     <Grid
         ColumnSpacing="0"
         RowSpacing="0">
-       <Grid.RowDefinitions>
-           <RowDefinition Height="*"/>
-           <RowDefinition Height="Auto"/>
-           <RowDefinition Height="Auto"/>
-           <RowDefinition Height="*"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -21,15 +21,62 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             x:Name="signatureView"
-            CaptionText=""
-            StrokeWidth="3"
+            CaptionText="Signature here"
+            StrokeWidth="5"
             StrokeColor="Black"
             PromptText=""
             SignatureLineWidth="0"
             BackgroundColor="White" />
-        <Entry Placeholder="Name Signature"
-               Grid.Row="1"
-               Grid.ColumnSpan="2"/>
+        <ScrollView Grid.Row="1" Grid.ColumnSpan="2"
+                     Orientation="Horizontal">
+            <StackLayout
+                Orientation="Horizontal">
+            <Button
+                Text="Undo"
+                x:Name="btnUndo"
+                Clicked="btnUndo_Clicked"/>
+             <Button
+                Text="ReUndo"
+                x:Name="btnReUndo"
+                Clicked="btnReUndo_Clicked"/>
+                <Button
+                Text="Erase"
+                x:Name="btnErase"
+                Clicked="btnErase_Clicked"/>
+
+            <Button
+                Text="Small"
+                x:Name="btnSmall"
+                Clicked="btnSmall_Clicked"/>
+            <Button
+                Text="Normal"
+                x:Name="btnNormal"
+                Clicked="btnNormal_Clicked"/>
+            <Button
+                Text="Bigger"
+                x:Name="btnBigger"
+                Clicked="btnBigger_Clicked"/>
+
+            <CheckBox
+                Color="Black"
+                IsChecked="True"
+                x:Name="cbBlack"
+                CheckedChanged="cbBlack_CheckedChanged"/>
+            <CheckBox
+                Color="Green"
+                x:Name="cbGreen"
+                CheckedChanged="cbGreen_CheckedChanged"/>
+             <CheckBox
+                Color="Red"
+                 x:Name="cbRed"
+                 CheckedChanged="cbRed_CheckedChanged"/>
+             <CheckBox
+                Color="Blue"
+                x:Name="cbBlue"
+                 CheckedChanged="cbBlue_CheckedChanged"/>
+            </StackLayout>
+           
+        </ScrollView>
         <Button Text="Load"
                 Grid.Column="0"
                 Grid.Row="2"
@@ -43,7 +90,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             x:Name="imgSignature"/>
-        <!--<ActivityIndicator
+        <ActivityIndicator
             IsRunning="True"
             IsVisible="False"
             Color="Black"
@@ -52,7 +99,6 @@
             Grid.Row="0"
             Grid.RowSpan="4"
             Grid.ColumnSpan="2"
-            x:Name="indi"/>-->
+            x:Name="indi"/>
     </Grid>
-    
 </ContentPage>

@@ -20,9 +20,9 @@ namespace FingerPaint.Droid
 
             base.OnCreate(savedInstanceState);
             
+            Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            
             await CrossMedia.Current.Initialize();
             LoadApplication(new App());
         }

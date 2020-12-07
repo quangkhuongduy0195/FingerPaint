@@ -171,6 +171,7 @@ namespace FingerPaint
 
         void btnUndo_Clicked(System.Object sender, System.EventArgs e)
         {
+            btnReUndo.IsVisible = true;
             var strokes = signatureView.Strokes;
             var a = strokes.Last();
             signatureView.Strokes = RemoveStrokesLast(strokes);
@@ -180,21 +181,15 @@ namespace FingerPaint
         {
             var ls = strokes.ToList();
             var a = ls.LastOrDefault();
+            
             listUndo.Add(a);
             ls.Remove(a);
-            if (ls.Count == 0)
-                listUndo.Clear();
             return ls;
         }
 
         public IEnumerable<IEnumerable<Point>> ReUndoStrokesLast(IEnumerable<IEnumerable<Point>> strokes)
         {
             var ls = strokes.ToList();
-            if (listUndo.Count == 0)
-            {
-                btnReUndo.IsVisible = true;
-                return ls;
-            }
             var a = listUndo.LastOrDefault();
             listUndo.Remove(a);
             ls.Add(a);
@@ -209,8 +204,7 @@ namespace FingerPaint
 
         void btnErase_Clicked(System.Object sender, System.EventArgs e)
         {
-            signatureView.Clear();
-            listUndo.Clear();
+            signatureView.StrokeColor = Color.White;
         }
     }
 }

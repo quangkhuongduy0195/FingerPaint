@@ -58,11 +58,18 @@
     <PackageReference Include="Prism.Unity.Forms">
       <Version>8.0.0.1909</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="itext7">
+      <Version>7.1.13</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\Controls\WebViewPDFPlatformRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -89,6 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+    <Folder Include="Renderers\" />
+    <Folder Include="Renderers\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FingerPaint\FingerPaint.csproj">

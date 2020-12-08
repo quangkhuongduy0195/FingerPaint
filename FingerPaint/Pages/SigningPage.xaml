@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:FingerPaint.Controls;assembly=FingerPaint"
+    x:Class="FingerPaint.Pages.SigningPage">
+    <Grid
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="FillAndExpand"
+        BackgroundColor="BlanchedAlmond"
+        RowDefinitions="auto, *, 0.1*"
+        ColumnDefinitions="auto, *, auto">
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="StartAndExpand"
+            Margin="0, 35, 0, 0"
+            WidthRequest="70"
+            HeightRequest="40"
+            CornerRadius="10"
+            BackgroundColor="GreenYellow"
+            TextColor="Goldenrod"
+            FontSize="Default"
+            Text="Back"
+            Command="{Binding GoBackCommand}"/>
+        <Label
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="0"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Margin="0, 35, 0, 0"
+            TextColor="SaddleBrown"
+            FontSize="Title"
+            Text="{Binding Title}"/>
+        <Button
+            Grid.Row="0"
+            Grid.Column="2"
+            HorizontalOptions="EndAndExpand"
+            VerticalOptions="EndAndExpand"
+            Margin="0, 35, 0, 0"
+            WidthRequest="70"
+            HeightRequest="40"
+            CornerRadius="10"
+            BackgroundColor="GreenYellow"
+            TextColor="Goldenrod"
+            FontSize="Default"
+            Text="Save"/>
+        <controls:WebViewPDF
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
+            BackgroundColor="LawnGreen"
+            Uri="{Binding UrlPDF}"/>
+        <!--<Frame
+            Grid.Row="1"
+            Grid.Column="0"
+            IsVisible="False"
+            VerticalOptions="Fill"
+            Grid.ColumnSpan="3"
+            BackgroundColor="SteelBlue"
+            CornerRadius="0">
+            <Label
+                Text="This is PDF Viewer"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                TextColor="White"
+                FontSize="36"/>
+        </Frame>-->
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            RowDefinitions="*"
+            ColumnDefinitions="*, *, *, *, *"
+            ColumnSpacing="0"
+            BackgroundColor="SaddleBrown">
+            <Button
+                Grid.Column="0"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="Default"
+                Text="Add1"/>
+            <Button
+                Grid.Column="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="Default"
+                Text="Add2"/>
+            <Button
+                Grid.Column="2"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="Default"
+                Text="Add3"/>
+            <Button
+                Grid.Column="3"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="Default"
+                Text="Add4"/>
+            <Button
+                Grid.Column="4"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                BackgroundColor="Transparent"
+                TextColor="White"
+                FontSize="Default"
+                Text="Add5"/>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -68,9 +68,10 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\Controls\WebViewPDFPlatformRenderer.cs" />
+    <Compile Include="Utility\WebViewUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -128,6 +129,12 @@
     <PackageReference Include="Prism.Unity.Forms">
       <Version>8.0.0.1909</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="itext7">
+      <Version>7.1.13</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -135,5 +142,11 @@
       <Project>{0CE2FA37-E9EA-46DC-9CC8-64843AD693DD}</Project>
       <Name>FingerPaint</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
+    <Folder Include="Renderers\Controls\" />
+    <Folder Include="Utility\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
 </Project>

@@ -24,6 +24,8 @@ namespace FingerPaint
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
+            containerRegistry.RegisterForNavigation<PDFListPage, PDFListPageViewModel>();
+            containerRegistry.RegisterForNavigation<SigningPage, SigningPageViewModel>();
         }
 
         protected override void OnStart()

@@ -23,68 +23,66 @@
             x:Name="signatureView"
             CaptionText="Signature here"
             StrokeWidth="5"
-            StrokeColor="Black"
-            PromptText=""
-            SignatureLineWidth="0"
             BackgroundColor="White" />
-        <ScrollView Grid.Row="1" Grid.ColumnSpan="2"
-                     Orientation="Horizontal">
+        <ScrollView
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal">
             <StackLayout
                 Orientation="Horizontal">
-            <Button
-                Text="Undo"
-                x:Name="btnUndo"
-                Clicked="btnUndo_Clicked"/>
-             <Button
-                Text="ReUndo"
-                x:Name="btnReUndo"
-                Clicked="btnReUndo_Clicked"/>
                 <Button
-                Text="Erase"
-                x:Name="btnErase"
-                Clicked="btnErase_Clicked"/>
-
-            <Button
-                Text="Small"
-                x:Name="btnSmall"
-                Clicked="btnSmall_Clicked"/>
-            <Button
-                Text="Normal"
-                x:Name="btnNormal"
-                Clicked="btnNormal_Clicked"/>
-            <Button
-                Text="Bigger"
-                x:Name="btnBigger"
-                Clicked="btnBigger_Clicked"/>
-
-            <CheckBox
-                Color="Black"
-                IsChecked="True"
-                x:Name="cbBlack"
-                CheckedChanged="cbBlack_CheckedChanged"/>
-            <CheckBox
-                Color="Green"
-                x:Name="cbGreen"
-                CheckedChanged="cbGreen_CheckedChanged"/>
-             <CheckBox
-                Color="Red"
-                 x:Name="cbRed"
-                 CheckedChanged="cbRed_CheckedChanged"/>
-             <CheckBox
-                Color="Blue"
-                x:Name="cbBlue"
-                 CheckedChanged="cbBlue_CheckedChanged"/>
-            </StackLayout>
-           
+                    Text="Undo"
+                    x:Name="btnUndo"
+                    Clicked="btnUndo_Clicked"/>
+                <Button
+                    Text="ReUndo"
+                    x:Name="btnReUndo"
+                    Clicked="btnReUndo_Clicked"/>
+                <Button
+                    Text="Erase"
+                    x:Name="btnErase"
+                    Clicked="btnErase_Clicked"/>
+                <Button
+                    Text="Small"
+                    x:Name="btnSmall"
+                    Clicked="btnSmall_Clicked"/>
+                <Button
+                    Text="Normal"
+                    x:Name="btnNormal"
+                    Clicked="btnNormal_Clicked"/>
+                <Button
+                    Text="Bigger"
+                    x:Name="btnBigger"
+                    Clicked="btnBigger_Clicked"/>
+                <CheckBox
+                    Color="Black"
+                    IsChecked="True"
+                    x:Name="cbBlack"
+                    CheckedChanged="cbBlack_CheckedChanged"/>
+                <CheckBox
+                    Color="Green"
+                    x:Name="cbGreen"
+                    CheckedChanged="cbGreen_CheckedChanged"/>
+                <CheckBox
+                    Color="Red"
+                    x:Name="cbRed"
+                    CheckedChanged="cbRed_CheckedChanged"/>
+                <CheckBox
+                    Color="Blue"
+                    x:Name="cbBlue"
+                    CheckedChanged="cbBlue_CheckedChanged"/>
+             </StackLayout>
         </ScrollView>
-        <Button Text="Load"
-                Grid.Column="0"
-                Grid.Row="2"
-                x:Name="btnLoad"/>
-        <Button Text="Save"
-                x:Name="btnSave"
-                Grid.Column="1"
-                Grid.Row="2"/>
+        <Button
+            Text="Load"
+            Grid.Column="0"
+            Grid.Row="2"
+            x:Name="btnLoad"/>
+        <Button
+            Text="Save"
+            x:Name="btnSave"
+            Grid.Column="1"
+            Grid.Row="2"/>
         <Image
             Grid.Row="3"
             Grid.Column="0"

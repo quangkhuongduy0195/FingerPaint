@@ -16,8 +16,7 @@ namespace FingerPaint
     public partial class MainPage : ContentPage
     {
         public bool _saveImg;
-        private Point[] points;
-        string host = "https://filesave.herokuapp.com";
+        readonly string _host = "https://filesave.herokuapp.com";
         string fileId;
         List<IEnumerable<Point>> listUndo;
         public MainPage()
@@ -62,14 +61,10 @@ namespace FingerPaint
             br.BaseStream.Position = 0;
             Byte[] All = br.ReadBytes((int)sigimage.Length);
             byte[] image = (byte[])All;
-            var lenght = image.Length;
             string base64 = Convert.ToBase64String(image);
-            var bytefrombase64 = Convert.FromBase64String(base64);
-            var lenghtfrombase64 = bytefrombase64.Length;
 
             Random rnd = new Random();
             int id = rnd.Next();
-            //fileId.Add(id.ToString());
             fileId = id.ToString();
 
             RequestSave request = new RequestSave()
@@ -80,14 +75,13 @@ namespace FingerPaint
             };
             await PushFileToServer(request);
 
-
             signatureView.Clear();
             btnLoad.IsVisible = true;
         }
 
         async Task PushFileToServer(RequestSave request)
         {
-            var apiReponse = RestService.For<IApiSaveFile>(host);
+            var apiReponse = RestService.For<IApiSaveFile>(_host);
             var reponse = await apiReponse.SaveFile(request);
             if (reponse.Success == true)
             {
@@ -102,11 +96,11 @@ namespace FingerPaint
         async Task LoadFileFormServe(RequestGet request)
         {
 
-            var apiReponse = RestService.For<IApiSaveFile>(host);
+            var apiReponse = RestService.For<IApiSaveFile>(_host);
             var reponse = await apiReponse.GetFile(request);
             if (reponse.Success == true)
             {
-                imgSignature.Source = host + reponse.LinkFile;
+                imgSignature.Source = _host + reponse.LinkFile;
             }
         }
 
@@ -173,7 +167,6 @@ namespace FingerPaint
         {
             btnReUndo.IsVisible = true;
             var strokes = signatureView.Strokes;
-            var a = strokes.Last();
             signatureView.Strokes = RemoveStrokesLast(strokes);
         }
 
@@ -192,6 +185,8 @@ namespace FingerPaint
             var ls = strokes.ToList();
             var a = listUndo.LastOrDefault();
             listUndo.Remove(a);
+            if (listUndo.Count == 0)
+                btnReUndo.IsVisible = false;
             ls.Add(a);
             return ls;
         }
@@ -204,7 +199,7 @@ namespace FingerPaint
 
         void btnErase_Clicked(System.Object sender, System.EventArgs e)
         {
-            signatureView.StrokeColor = Color.White;
+            
         }
     }
 }

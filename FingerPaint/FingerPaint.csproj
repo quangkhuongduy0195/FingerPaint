@@ -21,5 +21,14 @@
   <ItemGroup>
     <Folder Include="Request\" />
     <Folder Include="Reponse\" />
+    <Folder Include="Extended\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="database-security.pdf" />
+    <None Remove="modern-database.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="database-security.pdf" />
+    <EmbeddedResource Include="modern-database.pdf" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -33,7 +34,7 @@ namespace FingerPaint
             signatureView.PropertyChanged += SignatureView_PropertyChanged;
         }
 
-        
+
 
         private void SignatureView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -50,7 +51,8 @@ namespace FingerPaint
         {
             RequestGet request = new RequestGet();
             request.FileId = fileId;
-            await LoadFileFormServe(request);
+            //await LoadFileFormServe(request);
+            await LoadFileFromDisk(request);
             imgSignature.IsVisible = true;
         }
         private async void BtnSave_ClickedAsync(object sender, System.EventArgs e)
@@ -73,10 +75,87 @@ namespace FingerPaint
                 FileName = "test.png",
                 Base64File = base64
             };
-            await PushFileToServer(request);
-
+            //await PushFileToServer(request);
+            await SaveFileToDisk(request);
             signatureView.Clear();
             btnLoad.IsVisible = true;
+
+
+            // push
+            var pdfBase64 = string.Empty;
+            var assembly = IntrospectionExtensions.GetTypeInfo(GetType()).Assembly;
+            var path = assembly.GetManifestResourceNames().FirstOrDefault(arg => arg != null && arg.Contains("modern"));
+            using (var stream = assembly.GetManifestResourceStream(path))
+            {
+                var bytes = ReadToEnd(stream);
+                pdfBase64 = Convert.ToBase64String(bytes);
+            }
+            var signingPage = new SigningPage();
+            signingPage.PdfData = pdfBase64;
+            await Navigation.PushAsync(signingPage);
+        }
+
+        private byte[] ReadToEnd(System.IO.Stream stream)
+        {
+            long originalPosition = 0;
+
+            if (stream.CanSeek)
+            {
+                originalPosition = stream.Position;
+                stream.Position = 0;
+            }
+
+            try
+            {
+                byte[] readBuffer = new byte[4096];
+
+                int totalBytesRead = 0;
+                int bytesRead;
+
+                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+                {
+                    totalBytesRead += bytesRead;
+
+                    if (totalBytesRead == readBuffer.Length)
+                    {
+                        int nextByte = stream.ReadByte();
+                        if (nextByte != -1)
+                        {
+                            byte[] temp = new byte[readBuffer.Length * 2];
+                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                            readBuffer = temp;
+                            totalBytesRead++;
+                        }
+                    }
+                }
+
+                byte[] buffer = readBuffer;
+                if (readBuffer.Length != totalBytesRead)
+                {
+                    buffer = new byte[totalBytesRead];
+                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+                }
+                return buffer;
+            }
+            finally
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = originalPosition;
+                }
+            }
+        }
+
+        async Task SaveFileToDisk(RequestSave request)
+        {
+            var existed = Application.Current.Properties.ContainsKey(request.FileId);
+            if (!existed)
+                Application.Current.Properties.Add(request.FileId, null);
+            Application.Current.Properties[request.FileId] = request.Base64File;
+            await Application.Current.SavePropertiesAsync();
+            // verify
+            var saved = Application.Current.Properties[request.FileId];
         }
 
         async Task PushFileToServer(RequestSave request)
@@ -93,9 +172,29 @@ namespace FingerPaint
             }
         }
 
+        async Task LoadFileFromDisk(RequestGet request)
+        {
+            var rootDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var path = Path.Combine(rootDir, request.FileId);
+            var existed = File.Exists(path);
+            if (existed)
+                File.Delete(path);
+            var base64 = Application.Current.Properties[request.FileId].ToString();
+            var byteArray = System.Convert.FromBase64String(base64);
+            using (MemoryStream memoryStream = new MemoryStream(byteArray))
+            {
+                /*
+                 * Not using WriteAllBytesAsync
+                 * b/c WriteAllBytesAsync support by .NET standard 2.1
+                 * and not working in Native Platform
+                 */
+                File.WriteAllBytes(path, memoryStream.ToArray());
+            }
+            imgSignature.Source = path;
+        }
+
         async Task LoadFileFormServe(RequestGet request)
         {
-
             var apiReponse = RestService.For<IApiSaveFile>(_host);
             var reponse = await apiReponse.GetFile(request);
             if (reponse.Success == true)
@@ -174,7 +273,7 @@ namespace FingerPaint
         {
             var ls = strokes.ToList();
             var a = ls.LastOrDefault();
-            
+
             listUndo.Add(a);
             ls.Remove(a);
             return ls;
@@ -199,7 +298,7 @@ namespace FingerPaint
 
         void btnErase_Clicked(System.Object sender, System.EventArgs e)
         {
-            
+
         }
     }
 }

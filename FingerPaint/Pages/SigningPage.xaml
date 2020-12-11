@@ -54,7 +54,8 @@
             HorizontalOptions="Fill"
             VerticalOptions="Fill"
             BackgroundColor="LawnGreen"
-            Uri="{Binding UrlPDF}"/>
+            Uri="{Binding UrlPDF}"
+            LocalUri="{Binding LocalPDFUrl}"/>
         <!--<Frame
             Grid.Row="1"
             Grid.Column="0"
@@ -85,7 +86,8 @@
                 BackgroundColor="Transparent"
                 TextColor="White"
                 FontSize="Default"
-                Text="Add1"/>
+                Text="Sign"
+                Command="{Binding SignCommand}"/>
             <Button
                 Grid.Column="1"
                 HorizontalOptions="Center"

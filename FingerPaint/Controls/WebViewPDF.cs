@@ -6,7 +6,7 @@ namespace FingerPaint.Controls
     public class WebViewPDF : WebView
     {
         /// <summary>
-        /// Gets or sets the URI.
+        /// Gets or sets remote the URI.
         /// </summary>
         /// <value>The URI.</value>
         public string Uri
@@ -16,6 +16,20 @@ namespace FingerPaint.Controls
         }
         public static readonly BindableProperty UriProperty =
             BindableProperty.Create(propertyName: "Uri",
+            returnType: typeof(string), declaringType: typeof(WebViewPDF),
+            defaultValue: default(string), defaultBindingMode: BindingMode.TwoWay);
+
+        /// <summary>
+        /// Gets or sets the local URI.
+        /// </summary>
+        /// <value>The URI.</value>
+        public string LocalUri
+        {
+            get { return (string)GetValue(LocalUriProperty); }
+            set { SetValue(LocalUriProperty, value); }
+        }
+        public static readonly BindableProperty LocalUriProperty =
+            BindableProperty.Create(propertyName: "LocalUri",
             returnType: typeof(string), declaringType: typeof(WebViewPDF),
             defaultValue: default(string), defaultBindingMode: BindingMode.TwoWay);
 

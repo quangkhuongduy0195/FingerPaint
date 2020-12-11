@@ -19,7 +19,10 @@ namespace FingerPaint.ViewModels
         {
             try
             {
-                await _navigationService.GoBackToRootAsync(); //TODO: Change page
+                string testPDF = "HeaderFooter.pdf";
+                var pr = new NavigationParameters();
+                pr.Add(nameof(PageConstants.Start), testPDF);
+                await _navigationService.NavigateAsync(PageConstants.Sign, pr);
             }
             catch (Exception ex)
             {

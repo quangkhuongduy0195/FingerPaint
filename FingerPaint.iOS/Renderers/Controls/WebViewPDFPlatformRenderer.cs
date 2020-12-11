@@ -69,13 +69,27 @@ namespace FingerPaint.iOS.Renderers.Controls
                     if (customWebView == null)
                         return;
 
-                    //Device.BeginInvokeOnMainThread(() =>
-                    //{
-                    //    customWebView.OnNavigating(new WebNavigatingEventArgs(WebNavigationEvent.NewPage, null, ""));
-                    //});
-
-
                     DownloadFile(customWebView.Uri, customWebView);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            else if (e.PropertyName == "LocalUri" && (Element as WebViewPDF).LocalUri != null)
+            {
+                try
+                {
+                    var customWebView = Element as WebViewPDF;
+                    if (customWebView == null)
+                        return;
+
+                    string fileName = Path.Combine(NSBundle.MainBundle.BundlePath, string.Format("Content/{0}", WebUtility.UrlEncode(customWebView.LocalUri)));
+                    string folderName = Path.Combine(NSBundle.MainBundle.BundlePath, "Content");
+                    NSUrl nsUrlFileName = new NSUrl(fileName, false);
+                    NSUrl nsUrlFolderName = new NSUrl(folderName, false);
+                    //NSUrlRequest localUrlRequest = new NSUrlRequest(nsUrl);
+                    _wkWebViewPDF.LoadFileUrl(nsUrlFileName, nsUrlFolderName);
                 }
                 catch (Exception ex)
                 {
@@ -124,10 +138,12 @@ namespace FingerPaint.iOS.Renderers.Controls
                 // set timeout request 60s. WebRequest.TimeoutProperty is in miliseconds
                 //request.Timeout = CommonConst.TIME_OUT_WEBVIEW_IN_MILISECONDS;
 
+                
+
                 NSUrl nsURL = new NSUrl(url);
                 NSUrlRequest request = new NSUrlRequest(nsURL);
 
-                string filename = string.Empty;
+                //string filename = string.Empty;
                 if (!Directory.Exists(_destinationpath))
                 {
                     Directory.CreateDirectory(_destinationpath);
@@ -249,103 +265,103 @@ namespace FingerPaint.iOS.Renderers.Controls
             }
         }
 
-        [Export("webView:decidePolicyForNavigationResponse:decisionHandler:")]
-        public void DecidePolicy(WKWebView webView, WKNavigationResponse navigationResponse, Action<WKNavigationResponsePolicy> decisionHandler)
-        {
-            try
-            {
-                var response = (NSHttpUrlResponse)navigationResponse.Response;
-                var contentType = response.AllHeaderFields[FromObject("Content-Type")]?.ToString() ?? "";
-                if (!CommonConst.HTTP_RESPONSE_HEADER_CONTENT_TYPE_PDF.Equals(contentType))
-                {
-                    decisionHandler?.Invoke(WKNavigationResponsePolicy.Cancel);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            decisionHandler?.Invoke(WKNavigationResponsePolicy.Allow);
-        }
+        //[Export("webView:decidePolicyForNavigationResponse:decisionHandler:")]
+        //public void DecidePolicy(WKWebView webView, WKNavigationResponse navigationResponse, Action<WKNavigationResponsePolicy> decisionHandler)
+        //{
+        //    try
+        //    {
+        //        var response = (NSHttpUrlResponse)navigationResponse.Response;
+        //        var contentType = response.AllHeaderFields[FromObject("Content-Type")]?.ToString() ?? "";
+        //        if (!CommonConst.HTTP_RESPONSE_HEADER_CONTENT_TYPE_PDF.Equals(contentType))
+        //        {
+        //            decisionHandler?.Invoke(WKNavigationResponsePolicy.Cancel);
+        //            return;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex);
+        //    }
+        //    decisionHandler?.Invoke(WKNavigationResponsePolicy.Allow);
+        //}
 
-        [Export("webView:decidePolicyForNavigationAction:decisionHandler:")]
-        public void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
-        {
-            var urlRequest = navigationAction?.Request?.Url?.ToString() ?? "";
-            var urlMain = (navigationAction?.Request?.MainDocumentURL?.Scheme
-                               + "://"
-                               + navigationAction?.Request?.MainDocumentURL?.Host
-                               + navigationAction?.Request?.MainDocumentURL?.Path) ?? "";
+        //[Export("webView:decidePolicyForNavigationAction:decisionHandler:")]
+        //public void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
+        //{
+        //    var urlRequest = navigationAction?.Request?.Url?.ToString() ?? "";
+        //    var urlMain = (navigationAction?.Request?.MainDocumentURL?.Scheme
+        //                       + "://"
+        //                       + navigationAction?.Request?.MainDocumentURL?.Host
+        //                       + navigationAction?.Request?.MainDocumentURL?.Path) ?? "";
 
-            // link user click
-            if (urlRequest.Contains(urlMain))
-            {
-                nSUrlRequest = navigationAction?.Request;
-            }
-            decisionHandler?.Invoke(WKNavigationActionPolicy.Allow);
-        }
+        //    // link user click
+        //    if (urlRequest.Contains(urlMain))
+        //    {
+        //        nSUrlRequest = navigationAction?.Request;
+        //    }
+        //    decisionHandler?.Invoke(WKNavigationActionPolicy.Allow);
+        //}
 
-        [Export("webView:didFinishNavigation:")]
-        public async void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
-        {
-            StopTimer();
-            //string path = await SavePdf(nSUrlRequest?.Url?.ToString());
-            Element?.OnNavigated(new WebNavigatedEventArgs(WebNavigationEvent.NewPage, null, nSUrlRequest?.Url?.ToString(), WebNavigationResult.Success));
-        }
+        //[Export("webView:didFinishNavigation:")]
+        //public async void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+        //{
+        //    StopTimer();
+        //    //string path = await SavePdf(nSUrlRequest?.Url?.ToString());
+        //    Element?.OnNavigated(new WebNavigatedEventArgs(WebNavigationEvent.NewPage, null, nSUrlRequest?.Url?.ToString(), WebNavigationResult.Success));
+        //}
 
-        [Export("webView:didFailNavigation:withError:")]
-        public async void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
-        {
-            await ShowError(webView, error);
-        }
+        //[Export("webView:didFailNavigation:withError:")]
+        //public async void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
+        //{
+        //    await ShowError(webView, error);
+        //}
 
-        [Export("webView:didFailProvisionalNavigation:withError:")]
-        public async void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
-        {
-            await ShowError(webView, error);
-        }
+        //[Export("webView:didFailProvisionalNavigation:withError:")]
+        //public async void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
+        //{
+        //    await ShowError(webView, error);
+        //}
 
-        private async Task ShowError(WKWebView webView, NSError error)
-        {
-            Element?.OnNavigated(new WebNavigatedEventArgs(WebNavigationEvent.NewPage, null, nSUrlRequest?.Url?.ToString(), WebNavigationResult.Failure));
-            StopTimer();
-            var enumErr = Enum.Parse(typeof(NSUrlError), error.Code.ToString());
-            switch (enumErr)
-            {
-                case NSUrlError.Cancelled:
-                    break;
-                case NSUrlError.TimedOut:
-                    var result = await WebViewUtility.ShowAlert(CommonConst.ErrorCommonWebviewPDF, CommonConst.ButtonClose, CommonConst.ButtonRetry);
-                    if (result == 1 && !_isDead) // retry
-                    {
-                        webView?.LoadRequest(nSUrlRequest);
-                    }
-                    break;
-                case NSUrlError.NotConnectedToInternet:
-                case NSUrlError.CannotConnectToHost:
-                case NSUrlError.NetworkConnectionLost:
-                    var result1 = await WebViewUtility.ShowAlert(CommonConst.MessageRetry, CommonConst.ButtonClose, CommonConst.ButtonRetry);
-                    if (result1 == 1 && !_isDead) // retry
-                    {
-                        webView?.LoadRequest(nSUrlRequest);
-                    }
-                    break;
-                default:
-                    CommonResponseDTO commonResponse;
-                    try
-                    {
-                        NSData data = NSUrlConnection.SendSynchronousRequest(nSUrlRequest, out NSUrlResponse _response, out NSError _error);
-                        commonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CommonResponseDTO>(data?.ToString() ?? "");
-                    }
-                    catch
-                    {
-                        //handle error when DeserializeObject failed
-                        commonResponse = null;
-                    }
-                    await WebViewUtility.ShowAlert(commonResponse?.Message ?? CommonConst.ErrorCommonWebviewPDF, CommonConst.ButtonClose, null);
-                    break;
-            }
-        }
+        //private async Task ShowError(WKWebView webView, NSError error)
+        //{
+        //    Element?.OnNavigated(new WebNavigatedEventArgs(WebNavigationEvent.NewPage, null, nSUrlRequest?.Url?.ToString(), WebNavigationResult.Failure));
+        //    StopTimer();
+        //    var enumErr = Enum.Parse(typeof(NSUrlError), error.Code.ToString());
+        //    switch (enumErr)
+        //    {
+        //        case NSUrlError.Cancelled:
+        //            break;
+        //        case NSUrlError.TimedOut:
+        //            var result = await WebViewUtility.ShowAlert(CommonConst.ErrorCommonWebviewPDF, CommonConst.ButtonClose, CommonConst.ButtonRetry);
+        //            if (result == 1 && !_isDead) // retry
+        //            {
+        //                webView?.LoadRequest(nSUrlRequest);
+        //            }
+        //            break;
+        //        case NSUrlError.NotConnectedToInternet:
+        //        case NSUrlError.CannotConnectToHost:
+        //        case NSUrlError.NetworkConnectionLost:
+        //            var result1 = await WebViewUtility.ShowAlert(CommonConst.MessageRetry, CommonConst.ButtonClose, CommonConst.ButtonRetry);
+        //            if (result1 == 1 && !_isDead) // retry
+        //            {
+        //                webView?.LoadRequest(nSUrlRequest);
+        //            }
+        //            break;
+        //        default:
+        //            CommonResponseDTO commonResponse;
+        //            try
+        //            {
+        //                NSData data = NSUrlConnection.SendSynchronousRequest(nSUrlRequest, out NSUrlResponse _response, out NSError _error);
+        //                commonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CommonResponseDTO>(data?.ToString() ?? "");
+        //            }
+        //            catch
+        //            {
+        //                //handle error when DeserializeObject failed
+        //                commonResponse = null;
+        //            }
+        //            await WebViewUtility.ShowAlert(commonResponse?.Message ?? CommonConst.ErrorCommonWebviewPDF, CommonConst.ButtonClose, null);
+        //            break;
+        //    }
+        //}
     }
 }

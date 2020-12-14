@@ -23,6 +23,7 @@ namespace FingerPaint
         public MainPage()
         {
             InitializeComponent();
+            InitPdf();
             btnLoad.Clicked += BtnLoad_Clicked;
             btnSave.Clicked += BtnSave_ClickedAsync;
             listUndo = new List<IEnumerable<Point>>();
@@ -81,17 +82,15 @@ namespace FingerPaint
             btnLoad.IsVisible = true;
 
 
-            // push
-            var pdfBase64 = string.Empty;
-            var assembly = IntrospectionExtensions.GetTypeInfo(GetType()).Assembly;
-            var path = assembly.GetManifestResourceNames().FirstOrDefault(arg => arg != null && arg.Contains("modern"));
-            using (var stream = assembly.GetManifestResourceStream(path))
-            {
-                var bytes = ReadToEnd(stream);
-                pdfBase64 = Convert.ToBase64String(bytes);
-            }
+            
+
+            // TODO: Get saved PDF File Path
+            string savedPdfFilePath = LoadSavedPdf(_pdfFileName);
+
             var signingPage = new SigningPage();
-            signingPage.PdfData = pdfBase64;
+            signingPage.PdfData = _pdfBase64;
+            signingPage.ImageBinary = image;
+            signingPage.PdfFilePath = savedPdfFilePath;
             await Navigation.PushAsync(signingPage);
         }
 
@@ -147,6 +146,49 @@ namespace FingerPaint
             }
         }
 
+        private void SavePdfToLocalStorage(byte[] pdfBinary, string fileName)
+        {
+            string pdfDir = Path.Combine(_rootDir, _localPdfFolder);
+            string pdfFilePath = Path.Combine(pdfDir, fileName);
+            //File.Create(pdfFilePath);
+            //using (MemoryStream memoryStream = new MemoryStream(pdfBinary))
+            //{
+            //    File.WriteAllBytes(pdfFilePath, memoryStream.ToArray());
+            //}
+            File.WriteAllBytes(pdfDir, pdfBinary);
+        }
+
+        private string LoadSavedPdf(string fileName)
+        {
+            string pdfDir = Path.Combine(_rootDir, _localPdfFolder);
+            string savedPdfFilePath = Path.Combine(pdfDir, fileName);
+            string[] fileNames = Directory.GetFiles(pdfDir);
+            bool existed = File.Exists(savedPdfFilePath);
+            if (existed)
+                return savedPdfFilePath;
+            return null;
+        }
+
+        string _pdfBase64 = string.Empty;
+        string _pdfFileName = string.Empty;
+        private void InitPdf()
+        {
+            // push
+            var pdfBase64 = string.Empty;
+            var assembly = IntrospectionExtensions.GetTypeInfo(GetType()).Assembly;
+            var path = assembly.GetManifestResourceNames().FirstOrDefault(arg => arg != null && arg.Contains("security"));
+            int separatorIndex = path.IndexOf(".");
+            string pdfFileName = path.Substring(separatorIndex + 1);
+            _pdfFileName = pdfFileName;
+            using (var stream = assembly.GetManifestResourceStream(path))
+            {
+                var bytes = ReadToEnd(stream);
+                SavePdfToLocalStorage(bytes, pdfFileName);
+                pdfBase64 = Convert.ToBase64String(bytes);
+                _pdfBase64 = pdfBase64;
+            }
+        }
+
         async Task SaveFileToDisk(RequestSave request)
         {
             var existed = Application.Current.Properties.ContainsKey(request.FileId);
@@ -172,10 +214,12 @@ namespace FingerPaint
             }
         }
 
+        string _rootDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string _localPdfFolder = "SavedPdf";
+
         async Task LoadFileFromDisk(RequestGet request)
         {
-            var rootDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            var path = Path.Combine(rootDir, request.FileId);
+            var path = Path.Combine(_rootDir, request.FileId);
             var existed = File.Exists(path);
             if (existed)
                 File.Delete(path);

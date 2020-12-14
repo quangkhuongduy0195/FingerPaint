@@ -17,6 +17,7 @@
     <PackageReference Include="Xamarin.Controls.SignaturePad.Forms" Version="3.0.0" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="Refit" Version="5.2.4" />
+    <PackageReference Include="itext7" Version="7.1.13" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Request\" />

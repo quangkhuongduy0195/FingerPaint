@@ -2,6 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:extended="clr-namespace:FingerPaint.Extended"
              x:Class="FingerPaint.SigningPage">
     <ContentPage.Content>
-        <extended:PdfView x:Name="Viewer" HorizontalOptions="Fill" VerticalOptions="Fill"> </extended:PdfView>
+        <Grid RowDefinitions="*, 0.1*" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <extended:PdfView x:Name="Viewer" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill"> </extended:PdfView>
+            <Grid Grid.Row="1" BackgroundColor="SaddleBrown" HorizontalOptions="Fill" VerticalOptions="Fill">
+                <Button Text="Sign" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Default" Clicked="OnButtonSignClicked"/>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

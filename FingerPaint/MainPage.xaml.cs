@@ -84,7 +84,7 @@ namespace FingerPaint
             // push
             var pdfBase64 = string.Empty;
             var assembly = IntrospectionExtensions.GetTypeInfo(GetType()).Assembly;
-            var path = assembly.GetManifestResourceNames().FirstOrDefault(arg => arg != null && arg.Contains("modern"));
+            var path = assembly.GetManifestResourceNames().FirstOrDefault(arg => arg != null && arg.Contains("Table"));
             using (var stream = assembly.GetManifestResourceStream(path))
             {
                 var bytes = ReadToEnd(stream);
@@ -92,6 +92,7 @@ namespace FingerPaint
             }
             var signingPage = new SigningPage();
             signingPage.PdfData = pdfBase64;
+            signingPage.ImageBinary = image;
             await Navigation.PushAsync(signingPage);
         }
 

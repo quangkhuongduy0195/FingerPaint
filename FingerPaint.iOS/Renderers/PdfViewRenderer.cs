@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using CoreGraphics;
 using FingerPaint.iOS.Renderers;
 using Foundation;
 using PdfKit;
+using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using PdfViewF = FingerPaint.Extended.PdfView;

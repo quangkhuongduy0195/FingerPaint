@@ -22,13 +22,16 @@
     <Folder Include="Request\" />
     <Folder Include="Reponse\" />
     <Folder Include="Extended\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="database-security.pdf" />
     <None Remove="modern-database.pdf" />
+    <None Remove="Table.pdf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="database-security.pdf" />
     <EmbeddedResource Include="modern-database.pdf" />
+    <EmbeddedResource Include="Table.pdf" />
   </ItemGroup>
 </Project>

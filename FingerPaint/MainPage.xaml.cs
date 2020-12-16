@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Plugin.FilePicker;
+﻿using Plugin.FilePicker;
 using Xamarin.Forms;
 
 namespace FingerPaint
@@ -32,7 +26,6 @@ namespace FingerPaint
         {
             var file = await CrossFilePicker.Current.PickFile();
             pdfView.Uri = file.FilePath;
-
             pdfView.CurrentScale = 1.5;
         }
 

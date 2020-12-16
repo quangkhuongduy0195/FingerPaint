@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Support.V4.App;
 using Android.Widget;
 using FingerPaint.Controls.Renderers;
 using FingerPaint.Droid.PdfLibrarys.Pdfs;
+using FingerPaint.Droid.PdfLibrarys.Utilities;
 using FingerPaint.Droid.PdfLibrarys.Views;
 using FingerPaint.Droid.Renderers;
 using Java.IO;
@@ -16,13 +18,10 @@ using FormControl = FingerPaint.Controls.Renderers;
 [assembly: ExportRenderer(typeof(FormControl.PDFView), typeof(PDFViewRenderer))]
 namespace FingerPaint.Droid.Renderers
 {
-    public class PDFViewRenderer : ViewRenderer<FormControl.PDFView, Android.Views.View>
+    public class PDFViewRenderer : ViewRenderer<FormControl.PDFView, PdfView>
     {
-        PdfView _pdfView;
         public PDFViewRenderer(Context context) : base(context)
-        {
-
-        }
+        {}
 
         protected override void OnElementChanged(ElementChangedEventArgs<PDFView> e)
         {
@@ -32,8 +31,8 @@ namespace FingerPaint.Droid.Renderers
             {
                 if (Control == null)
                 {
-                    _pdfView = new PdfView(Context, Element);
-                    SetNativeControl(_pdfView);
+                    var pdfView = new PdfView(Context, Element);
+                    SetNativeControl(pdfView);
                     LoadFile(Element?.Uri);
                 }
             }
@@ -50,22 +49,22 @@ namespace FingerPaint.Droid.Renderers
                     break;
             }
         }
-        private void LoadFile(string url)
+
+        private void LoadFile(string uri)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(uri))
                 return;
 
-            File file = GetFileFromContentUri(url);
-
+            File file = Android.OS.Build.VERSION.SdkInt > BuildVersionCodes.M ? GetFileFromContentUri(uri) : new File(uri);
             if (!file.Exists())
             {
                 Toast.MakeText(Context, "File not exist", ToastLength.Short).Show();
                 return;
             }
-            if (file != null && _pdfView != null)
+            if (file != null && Control != null)
             {
                 var pdfFile = new PdfFile(file);
-                _pdfView.SetPdfFile(pdfFile);
+                Control.SetPdfFile(pdfFile);
             }
         }
 
@@ -91,7 +90,7 @@ namespace FingerPaint.Droid.Renderers
             }
             catch (IOException ex)
             {
-                throw ex;
+                LogUtils.Log(nameof(PDFViewRenderer), ex.Message);
             }
             finally
             {

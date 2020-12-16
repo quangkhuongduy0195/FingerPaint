@@ -10,7 +10,10 @@ namespace FingerPaint.Droid.PdfLibrarys.Utilities
         private const int MB = 1024;
         public BitmapCache()
         {
+            // Get max available VM memory, exceeding this amount will throw an
             int maxMemory = (int)(Runtime.GetRuntime().MaxMemory() / MB);
+
+            // Use 1/8th of the available memory for this memory cache.
             int cacheSize = maxMemory / 8;
             _memoryCache = new PDFLruCache(cacheSize);
         }

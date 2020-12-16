@@ -4,4 +4,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="pdf_page_number_text">@android:color/white</color>
+    <color name="pdf_page_number_background">@android:color/darker_gray</color>
+    <color name="pdf_page_background">@android:color/darker_gray</color>
+    
 </resources>

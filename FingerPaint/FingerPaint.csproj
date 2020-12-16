@@ -21,5 +21,10 @@
   <ItemGroup>
     <Folder Include="Request\" />
     <Folder Include="Reponse\" />
+    <PackageReference Include="Xamarin.Plugin.FilePicker" Version="2.1.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="Controls\Renderers\" />
   </ItemGroup>
 </Project>

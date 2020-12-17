@@ -1,6 +1,11 @@
-﻿using System;
+﻿using FingerPaint.Request;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
+using Refit;
+using SignaturePad.Forms;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,27 +19,18 @@ namespace FingerPaint
         public MainPage()
         {
             InitializeComponent();
+            btnPdfPad.Clicked += BtnPdfPad_ClickedAsync;
+            btnSignPad.Clicked += BtnSignPad_ClickedAsync;
         }
 
-        protected override void OnAppearing()
+        private async void BtnSignPad_ClickedAsync(object sender, EventArgs e)
         {
-            base.OnAppearing();
-
-            Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                var file = await CrossFilePicker.Current.PickFile();
-                pdfView.Uri = file.FilePath;
-            });
+            await Navigation.PushAsync(new NavigationPage(new SignaturePadPage()));
         }
 
-
-        async void OnClickButtonSelectFile(System.Object sender, System.EventArgs e)
+        private async void BtnPdfPad_ClickedAsync(object sender, EventArgs e)
         {
-            var file = await CrossFilePicker.Current.PickFile();
-            pdfView.Uri = file.FilePath;
-
-            pdfView.CurrentScale = 1.5;
+            await Navigation.PushAsync(new NavigationPage(new PDFViewPage()));
         }
-
     }
 }

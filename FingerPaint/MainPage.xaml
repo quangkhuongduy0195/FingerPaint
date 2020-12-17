@@ -1,24 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:renderer="clr-namespace:FingerPaint.Controls.Renderers"
-             x:Class="FingerPaint.MainPage">
-
-    <Grid
-        RowDefinitions="50,*"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill"
-        Padding="0">
-        <Button
-            Grid.Row="0"
-            Text="Select File"
-            HorizontalOptions="Center"
-            VerticalOptions="Start"
-            Clicked="OnClickButtonSelectFile"/>
-            
-        <renderer:PDFView
-             Grid.Row="1"
-            x:Name="pdfView"/>
-    </Grid>
-
+             x:Class="FingerPaint.MainPage"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms">
+    <StackLayout>
+        <Button Text="Signature Pad" x:Name="btnSignPad" />
+        <Button Text="PDF Pad" x:Name="btnPdfPad" />
+    </StackLayout>
 </ContentPage>
